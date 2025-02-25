@@ -2,6 +2,9 @@ class UploadsController < ApplicationController
   # before_action :authenticate_user! todo: uncomment this when we need auth
 
   def create
+    # Spoof user! todo: remove this and do it right
+    @current_user = User.find(1)
+
     puts current_user.inspect
     # CHeck and make sure a file is provided
     if params[:file].blank?
