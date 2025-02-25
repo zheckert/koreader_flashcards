@@ -5,6 +5,8 @@ require 'json'
 class DictionaryService
   BASE_URL = "https://api.dictionaryapi.dev/api/v2/entries/en/"
 
+#   https://dictionaryapi.dev/ todo: verify above link is correct
+
   def self.fetch_definition(word)
     response = Faraday.get("#{BASE_URL}#{word}")
     return nil unless response.success?
