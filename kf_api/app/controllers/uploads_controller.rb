@@ -15,6 +15,7 @@ class UploadsController < ApplicationController
     # Attach file to user via ActiveStorage
     current_user.csv_file.attach(params[:file])
 
+    # I had to force encoding because I was getting "Encoding::UndefinedConversionError" without it
     csv_data = current_user.csv_file.download.force_encoding("UTF-8")
 
     # In case you forget again, headers:true treats the first row as headers instead of data todo: delete this note when you remember
