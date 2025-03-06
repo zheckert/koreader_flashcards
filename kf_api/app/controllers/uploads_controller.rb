@@ -15,14 +15,24 @@ class UploadsController < ApplicationController
     # Attach file to user via ActiveStorage
     current_user.csv_file.attach(params[:file])
 
-    csv_data = current_user.csv_file.download
+    csv_data = current_user.csv_file.download.force_encoding("UTF-8")
 
     # In case you forget again, headers:true treats the first row as headers instead of data todo: delete this note when you remember
-    CSV.parse(csv_data, headers: true)
-       .map { |row| row["word"] }
-       .compact_blank # IN CASE YOU FORGET! This removes nil or blank values. They shouldn't exist at this stage but better to be safe. todo: update or remove note
-       .each { |word| current_user.flashcards.create!(word: word) }
+    words = CSV.parse(csv_data, headers: true)
+                .map { |row| row["word"] }
+                .compact_blank # IN CASE YOU FORGET! This removes nil or blank values. They shouldn't exist at this stage but better to be safe. todo: update or remove note
 
-    render json: { message: "File uploaded successfully" }, status: :created
+    flashcards = words.map { |word| current_user.flashcards.find_or_create_by(word: word) }
+
+    # Queue jobs with delays between them
+    flashcards.each_with_index do |flashcard, index|
+      FetchDefinitionJob.set(wait: index * 5.seconds).perform_later(flashcard.id)
+    end
+
+    render json: { 
+      message: "File uploaded successfully. Definitions will be fetched over the next #{(flashcards.count * 5.0 / 60).round(1)} minutes.",
+      flashcards_count: flashcards.count,
+      estimated_completion_time: Time.current + (flashcards.count * 5).seconds
+    }, status: :created
   end
 end
