@@ -26,13 +26,13 @@ class UploadsController < ApplicationController
 
     # Queue jobs with delays between them
     flashcards.each_with_index do |flashcard, index|
-      FetchDefinitionJob.set(wait: index.minutes).perform_later(flashcard.id)
+      FetchDefinitionJob.set(wait: index * 5.seconds).perform_later(flashcard.id)
     end
 
     render json: { 
-      message: "File uploaded successfully. Definitions will be fetched over the next #{flashcards.count} minutes.",
+      message: "File uploaded successfully. Definitions will be fetched over the next #{(flashcards.count * 5.0 / 60).round(1)} minutes.",
       flashcards_count: flashcards.count,
-      estimated_completion_time: Time.current + flashcards.count.minutes
+      estimated_completion_time: Time.current + (flashcards.count * 5).seconds
     }, status: :created
   end
 end
