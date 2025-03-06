@@ -22,11 +22,17 @@ class UploadsController < ApplicationController
                 .map { |row| row["word"] }
                 .compact_blank # IN CASE YOU FORGET! This removes nil or blank values. They shouldn't exist at this stage but better to be safe. todo: update or remove note
 
-    flashcards = words.map { |word| current_user.flashcards.create!(word: word) }
+    flashcards = words.map { |word| current_user.flashcards.find_or_create_by(word: word) }
 
-    # Queue jobs to grab definitions for each word
-    flashcards.each { |flashcard| FetchDefinitionJob.perform_later(flashcard.id) }
+    # Queue jobs with delays between them
+    flashcards.each_with_index do |flashcard, index|
+      FetchDefinitionJob.set(wait: index.minutes).perform_later(flashcard.id)
+    end
 
-    render json: { message: "File uploaded successfully, and definitions are being fetched" }, status: :created
+    render json: { 
+      message: "File uploaded successfully. Definitions will be fetched over the next #{flashcards.count} minutes.",
+      flashcards_count: flashcards.count,
+      estimated_completion_time: Time.current + flashcards.count.minutes
+    }, status: :created
   end
 end
