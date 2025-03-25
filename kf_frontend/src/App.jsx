@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Flashcards from "./components/Flashcards";
 import axios from "axios";
 
 function App() {
@@ -13,12 +14,7 @@ function App() {
 
   return (
     <>
-      {flashcards.map((card) => (
-        <div key={card.id} style={{ display: "flex", gap: "10px" }}>
-          <div>{card.word}:</div>
-          <div>{card.definition?.text}</div>
-        </div>
-      ))}
+      <Flashcards flashcards={flashcards} />
     </>
   );
 }
