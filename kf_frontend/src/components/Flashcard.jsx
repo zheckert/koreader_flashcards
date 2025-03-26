@@ -1,12 +1,14 @@
 import React, { useState } from "react";
+import "../../styles.css";
 
 function Flashcard({ word, definition }) {
   const [isFlipped, setIsFlipped] = useState(false);
+  const handleClick = () => {
+    setIsFlipped(!isFlipped);
+  };
+
   return (
-    <div
-      style={{ display: "flex", gap: "10px", border: "1px solid black" }}
-      onClick={() => setIsFlipped(!isFlipped)}
-    >
+    <div className={"flashcard"} onClick={handleClick}>
       {isFlipped ? <div>{definition}</div> : <div>{word}:</div>}
     </div>
   );
