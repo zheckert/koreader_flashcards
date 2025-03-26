@@ -4,7 +4,6 @@ function Flashcard({ key, word, definition }) {
   const [isFlipped, setIsFlipped] = useState(false);
   return isFlipped ? (
     <div
-      key={key}
       style={{ display: "flex", gap: "10px", border: "1px solid black" }}
       onClick={() => setIsFlipped(!isFlipped)}
     >
@@ -12,7 +11,6 @@ function Flashcard({ key, word, definition }) {
     </div>
   ) : (
     <div
-      key={key}
       style={{ display: "flex", gap: "10px", border: "1px solid black" }}
       onClick={() => setIsFlipped(!isFlipped)}
     >
