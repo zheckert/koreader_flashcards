@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Flashcards from "./components/Flashcards";
+import FlashcardList from "./components/FlashcardList";
 import axios from "axios";
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
 
   return (
     <>
-      <Flashcards flashcards={flashcards} />
+      <FlashcardList flashcards={flashcards} />
     </>
   );
 }

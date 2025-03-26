@@ -1,7 +1,7 @@
 import React from "react";
 import Flashcard from "./Flashcard";
 
-function Flashcards({ flashcards }) {
+function FlashcardList({ flashcards }) {
   return (
     <>
       {flashcards.map((card) => (
@@ -15,4 +15,4 @@ function Flashcards({ flashcards }) {
   );
 }
 
-export default Flashcards;
+export default FlashcardList;
