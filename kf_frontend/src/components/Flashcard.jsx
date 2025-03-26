@@ -1,20 +1,13 @@
 import React, { useState } from "react";
 
-function Flashcard({ key, word, definition }) {
+function Flashcard({ word, definition }) {
   const [isFlipped, setIsFlipped] = useState(false);
-  return isFlipped ? (
+  return (
     <div
       style={{ display: "flex", gap: "10px", border: "1px solid black" }}
       onClick={() => setIsFlipped(!isFlipped)}
     >
-      <div>{word}:</div>
-    </div>
-  ) : (
-    <div
-      style={{ display: "flex", gap: "10px", border: "1px solid black" }}
-      onClick={() => setIsFlipped(!isFlipped)}
-    >
-      <div>{definition}</div>
+      {isFlipped ? <div>{definition}</div> : <div>{word}:</div>}
     </div>
   );
 }
