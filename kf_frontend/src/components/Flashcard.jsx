@@ -8,8 +8,8 @@ function Flashcard({ word, definition }) {
   };
 
   return (
-    <div className={"flashcard"} onClick={handleClick}>
-      {isFlipped ? <div>{definition}</div> : <div>{word}:</div>}
+    <div className="flashcard" onClick={handleClick}>
+      {isFlipped ? <div>{definition}</div> : <div>{word}</div>}
     </div>
   );
 }

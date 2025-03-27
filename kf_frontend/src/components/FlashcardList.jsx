@@ -3,7 +3,7 @@ import Flashcard from "./Flashcard";
 
 function FlashcardList({ flashcards }) {
   return (
-    <>
+    <div className="flashcard-grid">
       {flashcards.map((card) => (
         <Flashcard
           key={card.id}
@@ -11,7 +11,7 @@ function FlashcardList({ flashcards }) {
           definition={card.definition?.text}
         />
       ))}
-    </>
+    </div>
   );
 }
 
